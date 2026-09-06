@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOXIS — Assistente Pessoal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">VOXIS</span>
+        <span class="logo-version">v1.0</span>
+      </div>
+      <div class="header-status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusLabel">Pronto</span>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- CHAT -->
+      <div class="chat-container" id="chatContainer">
+        <div class="chat-welcome">
+          <div class="welcome-icon">◈</div>
+          <h2>Olá! Eu sou o <strong>VOXIS</strong></h2>
+          <p>Seu assistente pessoal inteligente.<br>Aperte o botão e comece a falar.</p>
+        </div>
+      </div>
+
+      <!-- INPUT AREA -->
+      <div class="input-area">
+
+        <!-- VISUALIZADOR -->
+        <div class="visualizer-wrap">
+          <canvas id="visualizer"></canvas>
+          <div class="vad-status" id="vadStatus">—</div>
+        </div>
+
+        <!-- CONTROLES DE VOZ -->
+        <div class="voice-controls">
+          <button class="btn-voice" id="btnVoice" onclick="VoiceEngine.toggle()">
+                    <span class="btn-icon" id="btnIcon">🎙️</span>
+                    <span id="btnLabel">Falar</span>
+                </button>
+          <button class="btn-pause" id="btnPause" onclick="VoiceEngine.pause()" disabled>
+                    ⏸️
+                </button>
+        </div>
+
+        <!-- INPUT TEXTO -->
+        <div class="text-input-wrap">
+          <textarea
+                    id="textInput"
+                    placeholder="Ou digite aqui e pressione Enter..."
+                    rows="2"
+                    onkeydown="handleTextInput(event)"
+                ></textarea>
+          <button class="btn-send" onclick="handleSendText()">➤</button>
+        </div>
+
+        <!-- AÇÕES -->
+        <div class="action-bar">
+          <button class="btn-action" onclick="Memory.exportHistory()" title="Exportar histórico">
+                    📤 Exportar
+                </button>
+          <button class="btn-action" onclick="importFile()" title="Importar texto">
+                    📥 Importar
+                </button>
+          <button class="btn-action" onclick="Memory.clearHistory()" title="Limpar conversa">
+                    🗑️ Limpar
+                </button>
+          <button class="btn-action" id="btnSupabase" onclick="SupabaseDB.sync()" title="Sincronizar nuvem">
+                    ☁️ Sync
+                </button>
+          <button class="btn-action" id="btnDrive" onclick="DriveSync.backup()" title="Backup Drive">
+                    💾 Drive
+                </button>
+        </div>
+
+        <!-- INPUT FILE HIDDEN -->
+        <input type="file" id="fileInput" accept=".txt,.json" style="display:none" onchange="handleImport(event)">
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR INFO -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <h3>🧠 Aprendizado</h3>
+        <div class="stat-item">
+          <span>Interações</span>
+          <span id="statInteractions">0</span>
+        </div>
+        <div class="stat-item">
+          <span>Palavras aprendidas</span>
+          <span id="statWords">0</span>
+        </div>
+        <div class="stat-item">
+          <span>Sessões</span>
+          <span id="statSessions">0</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>🔊 Voz</h3>
+        <div class="stat-item">
+          <span>Velocidade</span>
+          <span>1.15x</span>
+        </div>
+        <div class="stat-item">
+          <span>Pitch</span>
+          <span>0.95</span>
+        </div>
+        <div class="stat-item">
+          <span>VAD Delay</span>
+          <span>3s</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>☁️ Conexões</h3>
+        <div class="stat-item">
+          <span>Local</span>
+          <span class="badge badge-green">✅ Ativo</span>
+        </div>
+        <div class="stat-item">
+          <span>Supabase</span>
+          <span class="badge badge-yellow" id="supabaseStatus">⚙️ Config</span>
+        </div>
+        <div class="stat-item">
+          <span>Drive</span>
+          <span class="badge badge-yellow" id="driveStatus">⚙️ Config</span>
+        </div>
+        <div class="stat-item">
+          <span>Groq AI</span>
+          <span class="badge badge-yellow" id="groqStatus">⚙️ Config</span>
+        </div>
+      </div>
+
+      <button class="btn-toggle-sidebar" onclick="toggleSidebar()">◀</button>
+    </aside>
+
+    <!-- TOGGLE SIDEBAR -->
+    <button class="btn-open-sidebar" id="btnOpenSidebar" onclick="toggleSidebar()">ℹ️</button>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/grouk.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/brain.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/drive.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
